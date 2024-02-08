@@ -1,0 +1,1 @@
+# dynamic-docker-image-in-k8s-ci-cd
