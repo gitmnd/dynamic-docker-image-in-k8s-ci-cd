@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-kubernetes-image-version-jenkins-deployment
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: cicd-kubernetes-image-version-jenkins-pod
+  replicas: ${REPLICA_SET}
+  template:
+    metadata:
+      labels:
+        app: cicd-kubernetes-image-version-jenkins-pod
+    spec:
+      containers:
+        - name: cicd-kubernetes-image-version-jenkins-pod
+          image: ${CONTAINER_IMAGE}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: ${ENV}
+          imagePullPolicy: ${IMAGE_PULL_POLICY}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cicd-kubernetes-image-version-jenkins-service
+  namespace: ${NAMESPACE}
+spec:
+  type: NodePort
+  selector:
+    app: cicd-kubernetes-image-version-jenkins-pod
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 7001
